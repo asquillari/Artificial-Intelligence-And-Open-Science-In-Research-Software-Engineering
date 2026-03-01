@@ -150,6 +150,23 @@ Los resultados se guardan en la carpeta `outputs/`:
 
 ---
 
+## 🧪 Tests
+
+Se implementaron tests básicos con pytest para validar el pipeline:
+
+- Verificación de PDFs descargados  
+- Generación de archivos TEI  
+- Creación de outputs  
+- Contenido de links  
+
+Ejecutar:
+
+```bash
+pytest
+```
+
+---
+
 ## 📜 Licencia
 
 MIT License
