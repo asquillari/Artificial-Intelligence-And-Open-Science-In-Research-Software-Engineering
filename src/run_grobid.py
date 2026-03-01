@@ -3,7 +3,7 @@ import glob
 import argparse
 import requests
 
-GROBID_URL = "http://localhost:8070/api/processFulltextDocument"
+GROBID_URL = os.getenv("GROBID_URL", "http://localhost:8070/api/processFulltextDocument")
 
 def process_pdf(pdf_path: str, out_dir: str, timeout: int = 180) -> str:
     base = os.path.splitext(os.path.basename(pdf_path))[0]
