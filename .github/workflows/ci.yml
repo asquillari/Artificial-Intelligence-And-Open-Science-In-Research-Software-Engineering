@@ -23,15 +23,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest
-
       - name: Start Grobid (Docker)
         run: |
           docker run -d --name grobid --network host \
-            -e JAVA_OPTS="-Xms512m -Xmx2g" \
+            -e JAVA_OPTS="-Xms1g -Xmx3g" \
             lfoppiano/grobid:0.8.1
 
-          docker ps -a
-          docker logs --tail 100 grobid || true
+      - name: Wait for Grobid to be ready
+        run: |
+          for i in $(seq 1 150); do
+            if curl -sf http://localhost:8070/ > /dev/null 2>&1; then
+              echo "Grobid listo en intento $i"
+              exit 0
+            fi
+            echo "Intento $i/150..."
+            sleep 5
+          done
+          echo "=== LOGS DE GROBID ==="
+          docker logs grobid
+          exit 1
 
       - name: Run pipeline
         env:
