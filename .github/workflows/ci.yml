@@ -29,11 +29,6 @@ jobs:
             -e JAVA_OPTS="-Xms512m -Xmx2g -XX:-UseContainerSupport" \
             lfoppiano/grobid:0.8.1
           
-          # Espera 30s y muestra los logs para ver qué está pasando
-          sleep 30
-          docker logs grobid
-          docker ps -a
-
       - name: Run pipeline
         env:
           GROBID_URL: "http://localhost:8070/api/processFulltextDocument"
