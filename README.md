@@ -1,5 +1,7 @@
 # 📄 Análisis de Papers con Grobid
 
+![CI](https://github.com/asquillari/Artificial-Intelligence-And-Open-Science-In-Research-Software-Engineering/actions/workflows/ci.yml/badge.svg)
+
 ## 📌 Descripción
 
 Este proyecto analiza un conjunto de artículos científicos de acceso abierto utilizando **Grobid** para extraer información estructurada a partir de PDFs.
