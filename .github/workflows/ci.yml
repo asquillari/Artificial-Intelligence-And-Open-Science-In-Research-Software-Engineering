@@ -42,11 +42,11 @@ jobs:
           GROBID_URL: "http://localhost:8070/api/processFulltextDocument"
         run: |
           python src/download_pdfs.py
+          python src/wait_grobid.py
           python src/run_grobid.py
           python src/wordcloud_abstracts.py
           python src/count_figures.py
           python src/extract_links.py
-
       - name: Run tests
         run: |
           pytest
