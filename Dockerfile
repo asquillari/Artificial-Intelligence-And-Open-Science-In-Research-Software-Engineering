@@ -9,4 +9,4 @@ COPY . /app
 
 RUN mkdir -p outputs data/tei
 
-CMD sh -c "python src/download_pdfs.py && python src/run_grobid.py && python src/wordcloud_abstracts.py && python src/count_figures.py && python src/extract_links.py"
+CMD sh -c "python src/wait_grobid.py && python src/download_pdfs.py && python src/run_grobid.py && python src/wordcloud_abstracts.py && python src/count_figures.py && python src/extract_links.py"

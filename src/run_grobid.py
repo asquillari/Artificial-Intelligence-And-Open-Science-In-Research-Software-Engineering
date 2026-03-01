@@ -5,7 +5,7 @@ import requests
 
 GROBID_URL = os.getenv("GROBID_URL", "http://localhost:8070/api/processFulltextDocument")
 
-def process_pdf(pdf_path: str, out_dir: str, timeout: int = 180) -> str:
+def process_pdf(pdf_path: str, out_dir: str, timeout: int = 600) -> str:
     base = os.path.splitext(os.path.basename(pdf_path))[0]
     out_path = os.path.join(out_dir, f"{base}.tei.xml")
 
@@ -50,6 +50,9 @@ def main():
             fail += 1
 
     print(f"\nResumen: OK={ok}, FAIL={fail}, TEI en {args.out_dir}")
+
+    if fail > 0:
+        raise SystemExit(2)
 
 if __name__ == "__main__":
     main()
