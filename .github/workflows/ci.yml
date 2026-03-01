@@ -26,7 +26,7 @@ jobs:
       - name: Start Grobid (Docker)
         run: |
           docker run -d --name grobid --network host \
-            -e JAVA_OPTS="-Xms1g -Xmx3g" \
+            -e JAVA_OPTS="-Xms512m -Xmx2g -XX:-UseContainerSupport" \
             lfoppiano/grobid:0.8.1
           
           # Espera 30s y muestra los logs para ver qué está pasando
