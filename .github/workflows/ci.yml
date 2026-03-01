@@ -34,20 +34,6 @@ jobs:
           docker logs grobid
           docker ps -a
 
-      - name: Wait for Grobid to be ready
-        run: |
-          for i in $(seq 1 150); do
-            if curl -sf http://localhost:8070/ > /dev/null 2>&1; then
-              echo "Grobid listo en intento $i"
-              exit 0
-            fi
-            echo "Intento $i/150..."
-            sleep 5
-          done
-          echo "=== LOGS DE GROBID ==="
-          docker logs grobid
-          exit 1
-
       - name: Run pipeline
         env:
           GROBID_URL: "http://localhost:8070/api/processFulltextDocument"
