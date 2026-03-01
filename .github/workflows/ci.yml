@@ -28,6 +28,11 @@ jobs:
           docker run -d --name grobid --network host \
             -e JAVA_OPTS="-Xms1g -Xmx3g" \
             lfoppiano/grobid:0.8.1
+          
+          # Espera 30s y muestra los logs para ver qué está pasando
+          sleep 30
+          docker logs grobid
+          docker ps -a
 
       - name: Wait for Grobid to be ready
         run: |
