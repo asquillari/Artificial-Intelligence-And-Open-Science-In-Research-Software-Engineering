@@ -4,19 +4,25 @@ import requests
 
 def main():
     grobid_url = os.getenv("GROBID_URL", "http://localhost:8070/api/processFulltextDocument")
-    base = grobid_url.split("/api/")[0]  
-    probe = base + "/api/isalive"
+    base = grobid_url.split("/api/")[0].rstrip("/")  # http://localhost:8070
+    probe = f"{base}/api/isalive"
 
-    for i in range(60):
+    max_tries = int(os.getenv("GROBID_WAIT_TRIES", "180"))   # 180*2s = 6 min
+    sleep_s = float(os.getenv("GROBID_WAIT_SLEEP", "2"))
+
+    last_err = None
+    for i in range(1, max_tries + 1):
         try:
-            r = requests.get(probe, timeout=2)
+            r = requests.get(probe, timeout=3)
             if r.status_code == 200:
                 print("Grobid listo ✅")
                 return
-        except Exception:
-            pass
-        print("Esperando a Grobid...")
-        time.sleep(2)
+            last_err = f"status={r.status_code}"
+        except Exception as e:
+            last_err = repr(e)
+
+        print(f"Esperando a Grobid... ({i}/{max_tries}) [{last_err}]")
+        time.sleep(sleep_s)
 
     raise SystemExit("ERROR: Grobid no respondió a tiempo")
 
