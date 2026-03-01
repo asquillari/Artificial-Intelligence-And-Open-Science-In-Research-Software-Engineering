@@ -25,23 +25,28 @@ jobs:
           pip install pytest
 
       - name: Start Grobid (Docker)
-        run: |
-          docker run -d --name grobid -p 8070:8070 \
-            -e JAVA_OPTS="-Xms512m -Xmx2g" \
-            lfoppiano/grobid:0.7.2
+          run: |
+            docker run -d --name grobid -p 8070:8070 -e JAVA_OPTS="-Xms512m -Xmx2g" lfoppiano/grobid:0.7.2
+            echo "== docker ps -a =="
+            docker ps -a
+            echo "== inspect state =="
+            docker inspect -f 'status={{.State.Status}} exit={{.State.ExitCode}}' grobid
+            echo "== logs (primeros) =="
+            docker logs --tail 200 grobid || true
 
       - name: Run pipeline
-        env:
-          GROBID_URL: "http://localhost:8070/api/processFulltextDocument"
-          GROBID_WAIT_TRIES: "180"
-          GROBID_WAIT_SLEEP: "2"
-        run: |
-          python src/download_pdfs.py
-          python src/wait_grobid.py
-          python src/run_grobid.py
-          python src/wordcloud_abstracts.py
-          python src/count_figures.py
-          python src/extract_links.py
+          env:
+            GROBID_URL: "http://localhost:8070/api/processFulltextDocument"
+            GROBID_WAIT_TRIES: "240"
+            GROBID_WAIT_SLEEP: "2"
+          run: |
+            echo "GROBID_URL=$GROBID_URL"
+            python src/download_pdfs.py
+            python src/wait_grobid.py
+            python src/run_grobid.py
+            python src/wordcloud_abstracts.py
+            python src/count_figures.py
+            python src/extract_links.py
 
       - name: Run tests
         run: |
