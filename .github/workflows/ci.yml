@@ -26,13 +26,12 @@ jobs:
 
       - name: Start Grobid (Docker)
         run: |
-          docker run -d --name grobid -p 8070:8070 -e JAVA_OPTS="-Xms512m -Xmx2g" lfoppiano/grobid:0.8.1
-          echo "== docker ps -a =="
+          docker run -d --name grobid --network host \
+            -e JAVA_OPTS="-Xms512m -Xmx2g" \
+            lfoppiano/grobid:0.8.1
+
           docker ps -a
-          echo "== inspect state =="
-          docker inspect -f 'status={{.State.Status}} exit={{.State.ExitCode}}' grobid
-          echo "== logs (primeros) =="
-          docker logs --tail 200 grobid || true
+          docker logs --tail 100 grobid || true
 
       - name: Run pipeline
         env:
