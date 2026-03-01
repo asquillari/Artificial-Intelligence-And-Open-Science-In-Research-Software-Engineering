@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/asquillari/Artificial-Intelligence-And-Open-Science-In-Research-Software-Engineering/actions/workflows/ci.yml/badge.svg)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18827695.svg)](https://doi.org/10.5281/zenodo.18827695)
+
 ## 📌 Descripción
 
 Este proyecto analiza un conjunto de artículos científicos de acceso abierto utilizando **Grobid** para extraer información estructurada a partir de PDFs.
