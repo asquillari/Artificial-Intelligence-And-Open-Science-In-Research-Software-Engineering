@@ -48,3 +48,8 @@ results/
 # Environment variables
 # =========================
 .env
+
+# =========================
+# Tests
+# =========================
+.pytest_cache

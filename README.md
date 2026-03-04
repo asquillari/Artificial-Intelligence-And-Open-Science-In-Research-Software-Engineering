@@ -22,6 +22,70 @@ El objetivo es demostrar un flujo de trabajo reproducible que combine:
 
 ---
 
+## 📂 Estructura del proyecto
+
+```
+
+├── .github/workflows/
+│   └── ci.yml                # Pipeline de integración continua (GitHub Actions)
+│
+├── data/
+│   ├── pdfs/                 # PDFs descargados desde arXiv
+│   ├── tei/                  # XML generados por Grobid
+│   └── papers.csv            # Lista de papers a descargar
+│
+├── outputs/                  # Resultados del análisis
+│   ├── abstract_keywords_top50.txt
+│   ├── figures_per_paper.png
+│   ├── links_per_paper.txt
+│   └── wordcloud_abstracts.png
+│
+├── src/                      # Scripts del pipeline
+│   ├── download_pdfs.py
+│   ├── run_grobid.py
+│   ├── wait_grobid.py
+│   ├── wordcloud_abstracts.py
+│   ├── count_figures.py
+│   └── extract_links.py
+│
+├── tests/                    # Tests automáticos con pytest
+│
+├── Dockerfile                # Imagen Docker del pipeline
+├── docker-compose.yml        # Orquestación de servicios (pipeline + Grobid)
+├── requirements.txt          # Dependencias Python
+├── LICENSE                   # Licencia del proyecto
+└── README.md
+```
+
+---
+
+## 🔄 Pipeline de procesamiento
+
+El pipeline del proyecto sigue los siguientes pasos:
+```
+papers.csv
+     │
+     ▼
+download_pdfs.py
+     │
+     ▼
+PDFs
+     │
+     ▼
+Grobid (Docker container)
+     │
+     ▼
+TEI XML
+     │
+     ├── wordcloud_abstracts.py
+     ├── count_figures.py
+     └── extract_links.py
+            │
+            ▼
+        outputs/
+```
+
+---
 
 # ⚙️ Instalación
 
@@ -140,6 +204,22 @@ El proyecto está archivado en **Zenodo**, lo que permite citarlo como software 
 DOI:
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18827695.svg)](https://doi.org/10.5281/zenodo.18827695)
+
+---
+
+## 📚 Cómo citar este software
+
+Si utilizas este proyecto en investigación o docencia, puedes citarlo usando el DOI generado por Zenodo:
+
+```
+@software{asquillari_ai_open_science_pipeline,
+  author = {Asquillari},
+  title = {Artificial Intelligence and Open Science in Research Software Engineering},
+  year = {2026},
+  doi = {10.5281/zenodo.18827695},
+  url = {https://doi.org/10.5281/zenodo.18827695}
+}
+````
 
 ---
 
