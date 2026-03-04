@@ -35,7 +35,6 @@ jobs:
           GROBID_WAIT_TRIES: "240"
           GROBID_WAIT_SLEEP: "2"
         run: |
-          echo "GROBID_URL=$GROBID_URL"
           python src/download_pdfs.py
           python src/wait_grobid.py
           python src/run_grobid.py
@@ -45,7 +44,8 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest
+          pytest -m "not integration"
+          pytest -m "integration"
 
       - name: Stop Grobid
         if: always()
