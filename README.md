@@ -56,7 +56,40 @@ El objetivo es demostrar un flujo de trabajo reproducible que combine:
 ├── LICENSE                   # Licencia del proyecto
 └── README.md
 ```
+---
+## 📂 Estructura del proyecto
+- **src/download_pdfs.py**  
+  Descarga los PDFs de artículos científicos desde arXiv usando las URLs definidas en `data/papers.csv` y los guarda en `data/pdfs/`.
 
+- **src/wait_grobid.py**  
+  Espera a que el servidor Grobid esté disponible antes de ejecutar el pipeline. Principalmente en Docker y CI para evitar errores de conexión.
+
+- **src/run_grobid.py**  
+  Envía los PDFs a **Grobid** para extraer información estructurada y genera archivos **TEI XML** en `data/tei/`.
+
+- **src/wordcloud_abstracts.py**  
+  Extrae los abstracts de los archivos TEI, limpia el texto y genera un **wordcloud** y un archivo con las **50 palabras más frecuentes**.
+
+- **src/count_figures.py**  
+  Analiza los archivos TEI y cuenta la cantidad de figuras en cada paper, generando un **gráfico de barras**.
+
+- **src/extract_links.py**  
+  Extrae los enlaces externos presentes en los artículos y guarda los resultados en `outputs/links_per_paper.txt`.
+
+- **data/papers.csv**  
+  Dataset de entrada con los artículos a analizar (`id`, `url`).
+
+- **tests/**  
+  Contiene los tests automatizados (datos, outputs, pipeline e integración) ejecutados con **pytest**.
+
+- **Dockerfile**  
+  Define el entorno reproducible del proyecto e instala las dependencias necesarias.
+
+- **docker-compose.yml**  
+  Permite ejecutar el pipeline completo junto con el servicio **Grobid** utilizando Docker.
+
+- **.github/workflows/ci.yml**  
+  Configuración de **GitHub Actions** que ejecuta el pipeline y los tests automáticamente en cada push o pull request.
 ---
 
 ## 🔄 Pipeline de procesamiento
@@ -102,7 +135,7 @@ Instalar dependencias:
 pip install -r requirements.txt
 ```
 
-# 🐳 Ejecución con Docker 
+# 🐳 Ejecución completa con Docker 
 
 El pipeline completo puede ejecutarse usando **Docker Compose**, lo que garantiza reproducibilidad.
 
@@ -121,9 +154,17 @@ Esto levanta automáticamente:
 
 También puede ejecutarse paso a paso:
 
+En una terminal:
+
+```bash
+docker pull lfoppiano/grobid:0.7.2
+docker run -t --rm -p 8070:8070 lfoppiano/grobid:0.7.2
+```
+
+Y en una segunda terminal:
 ```bash
 python src/download_pdfs.py
-python src/wait_grobid.py
+python src/wait_grobid.py  
 python src/run_grobid.py
 python src/wordcloud_abstracts.py
 python src/count_figures.py
@@ -132,17 +173,85 @@ python src/extract_links.py
 
 ---
 
-# 🧪 Tests
+## 🧪 Testing
 
-El proyecto incluye tests automatizados utilizando **pytest**.
+El proyecto incluye un conjunto de **tests automatizados con pytest** para verificar que el pipeline funcione correctamente y que los datos generados tengan la estructura esperada.
 
-Ejecutar:
+Los tests están organizados en varias categorías:
 
-```bash
+### 1. Tests de datos (`test_data.py`)
+
+Validan la integridad del dataset de entrada:
+
+- Verifica que `data/papers.csv` exista.
+- Comprueba que el CSV tenga las columnas requeridas (`id`, `url`).
+- Verifica que el archivo no esté vacío.
+- Valida que las URLs tengan formato correcto de PDF de arXiv.
+
+Estos tests aseguran que el pipeline tenga **datos de entrada válidos**.
+
+---
+
+### 2. Tests de outputs (`test_outputs.py`)
+
+Validan los resultados generados por el pipeline:
+
+- Existencia del **wordcloud de abstracts**.
+- Existencia del **gráfico de figuras por paper**.
+- Existencia del archivo de **links extraídos**.
+- Verificación de que los archivos generados **no estén vacíos**.
+
+Estos tests aseguran que el pipeline produce **resultados correctos**.
+
+---
+
+### 3. Tests del pipeline (`test_pipeline.py`)
+
+Comprueban que los distintos pasos del pipeline se hayan ejecutado correctamente:
+
+- Verifica que los **PDFs se hayan descargado**.
+- Verifica que **Grobid haya generado los archivos TEI XML**.
+- Comprueba que los **outputs finales existan**.
+
+---
+
+### 4. Tests de integración (`test_pipeline_integration.py`)
+
+Estos tests verifican el funcionamiento **end-to-end del pipeline**.
+
+Incluyen:
+
+- Validación de PDFs descargados
+- Validación de XML generados
+- Verificación del pipeline completo
+
+Estos tests se marcan como:
+@pytest.mark.integration
+
+
+y pueden ejecutarse por separado.
+
+---
+
+## ▶️ Ejecutar los tests
+
+Ejecutar todos los tests:
+
+```
 pytest
 ```
 
----
+Ejecutar solo tests rápidos (sin integración):
+```
+pytest -m "not integration"
+```
+
+Ejecutar solo tests de integración:
+```
+pytest -m "integration"
+```
+
+ ---
 
 # 🔁 Integración Continua
 
@@ -179,12 +288,6 @@ data/tei/
 
 ---
 
-# 📦 Dataset
-
-Los artículos analizados se descargan automáticamente desde **arXiv** en formato PDF.
-
----
-
 # 🔬 Reproducibilidad
 
 Este proyecto sigue principios de **Open Science**:
@@ -205,21 +308,6 @@ DOI:
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18827695.svg)](https://doi.org/10.5281/zenodo.18827695)
 
----
-
-## 📚 Cómo citar este software
-
-Si utilizas este proyecto en investigación o docencia, puedes citarlo usando el DOI generado por Zenodo:
-
-```
-@software{asquillari_ai_open_science_pipeline,
-  author = {Asquillari},
-  title = {Artificial Intelligence and Open Science in Research Software Engineering},
-  year = {2026},
-  doi = {10.5281/zenodo.18827695},
-  url = {https://doi.org/10.5281/zenodo.18827695}
-}
-````
 
 ---
 
