@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 TEI_DIR = "data/tei"
 OUT_DIR = "outputs"
 
-# Stopwords mínimas en inglés (podés ampliar)
 STOPWORDS = {
     "the","and","to","of","in","a","for","is","on","we","this","that","with","as","are",
     "our","be","by","an","from","it","or","at","can","also","these","such","using",
