@@ -314,7 +314,7 @@ DOI:
 
 Si usa este repositorio, porfavor citarlo de la siguiente manera:
 
-Squillari, A. (2026). *Artificial Intelligence and Open Science in Research Software Engineering* (v1.0). Zenodo. https://doi.org/10.5281/zenodo.18827695
+Squillari, A. (2026). Artificial Intelligence and Open Science in Research Software Engineering (Version 1.0) [Computer software]. https://doi.org/10.5281/zenodo.18827695
 
 La cita tambien se encuentra disponible en `CITATION.cff`.
 
