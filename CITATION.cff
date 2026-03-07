@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "Artificial Intelligence and Open Science in Research Software Engineering"
+message: "If you use this software, please cite it as below."
+type: software
+
+authors:
+  - family-names: Squillari
+    given-names: Agostina
+
+repository-code: "https://github.com/asquillari/Artificial-Intelligence-And-Open-Science-In-Research-Software-Engineering"
+
+version: 1.0
+date-released: 2026-03-01
+
+doi: 10.5281/zenodo.18827695
+
+license: MIT
