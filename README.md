@@ -22,7 +22,7 @@ El objetivo es demostrar un flujo de trabajo reproducible que combine:
 
 ---
 
-## 📂 Estructura del proyecto
+# 📂 Estructura del proyecto
 
 ```
 
@@ -53,11 +53,62 @@ El objetivo es demostrar un flujo de trabajo reproducible que combine:
 ├── Dockerfile                # Imagen Docker del pipeline
 ├── docker-compose.yml        # Orquestación de servicios (pipeline + Grobid)
 ├── requirements.txt          # Dependencias Python
+├── CITATION.cff              # Cita el codigo
 ├── LICENSE                   # Licencia del proyecto
 └── README.md
 ```
 ---
-## 📂 Estructura del proyecto
+
+## 🔄 Pipeline de procesamiento
+
+El pipeline del proyecto sigue los siguientes pasos:
+```
+papers.csv
+     │
+     ▼
+download_pdfs.py
+     │
+     ▼
+PDFs
+     │
+     ▼
+Grobid (Docker container)
+     │
+     ▼
+TEI XML
+     │
+     ├── wordcloud_abstracts.py
+     ├── count_figures.py
+     └── extract_links.py
+            │
+            ▼
+        outputs/
+```
+
+
+
+El pipeline produce distintos outputs:
+
+- **Wordcloud de abstracts**
+- **Conteo de figuras en papers**
+- **Extracción de links**
+- **Archivos TEI XML generados por Grobid**
+
+Los resultados se guardan en:
+
+```
+outputs/
+```
+
+y
+
+```
+data/tei/
+```
+
+---
+
+## 🧩 Componentes del pipeline
 - **src/download_pdfs.py**  
   Descarga los PDFs de artículos científicos desde arXiv usando las URLs definidas en `data/papers.csv` y los guarda en `data/pdfs/`.
 
@@ -90,33 +141,18 @@ El objetivo es demostrar un flujo de trabajo reproducible que combine:
 
 - **.github/workflows/ci.yml**  
   Configuración de **GitHub Actions** que ejecuta el pipeline y los tests automáticamente en cada push o pull request.
----
 
-## 🔄 Pipeline de procesamiento
+ ---
 
-El pipeline del proyecto sigue los siguientes pasos:
-```
-papers.csv
-     │
-     ▼
-download_pdfs.py
-     │
-     ▼
-PDFs
-     │
-     ▼
-Grobid (Docker container)
-     │
-     ▼
-TEI XML
-     │
-     ├── wordcloud_abstracts.py
-     ├── count_figures.py
-     └── extract_links.py
-            │
-            ▼
-        outputs/
-```
+# 🔬 Reproducibilidad
+
+Este proyecto sigue principios de **Open Science**:
+
+- Código abierto
+- Pipeline automatizado
+- Entorno reproducible con Docker
+- Tests automatizados
+- Integración continua
 
 ---
 
@@ -173,7 +209,20 @@ python src/extract_links.py
 
 ---
 
-## 🧪 Testing
+# 🔁 Integración Continua
+
+Este repositorio utiliza **GitHub Actions** para:
+
+- Ejecutar el pipeline automáticamente
+- Correr los tests
+- Verificar que el proyecto sea reproducible
+
+Cada push o pull request dispara el workflow de CI.
+
+---
+
+
+# 🧪 Testing
 
 El proyecto incluye un conjunto de **tests automatizados con pytest** para verificar que el pipeline funcione correctamente y que los datos generados tengan la estructura esperada.
 
@@ -251,56 +300,19 @@ Ejecutar solo tests de integración:
 pytest -m "integration"
 ```
 
- ---
 
-# 🔁 Integración Continua
+---
+# 📊 Metadata
 
-Este repositorio utiliza **GitHub Actions** para:
+El proyecto incluye metadata para facilitar su citación y reutilización:
 
-- Ejecutar el pipeline automáticamente
-- Correr los tests
-- Verificar que el proyecto sea reproducible
-
-Cada push o pull request dispara el workflow de CI.
+- `CITATION.cff` → permite citar el software desde GitHub
+- DOI en Zenodo → identificador persistente del proyecto
+- Licencia MIT → permite reutilización del código
 
 ---
 
-# 📊 Resultados generados
-
-El pipeline produce distintos outputs:
-
-- **Wordcloud de abstracts**
-- **Conteo de figuras en papers**
-- **Extracción de links**
-- **Archivos TEI XML generados por Grobid**
-
-Los resultados se guardan en:
-
-```
-outputs/
-```
-
-y
-
-```
-data/tei/
-```
-
----
-
-# 🔬 Reproducibilidad
-
-Este proyecto sigue principios de **Open Science**:
-
-- Código abierto
-- Pipeline automatizado
-- Entorno reproducible con Docker
-- Tests automatizados
-- Integración continua
-
----
-
-# 📑 DOI del proyecto
+## 📑 DOI del proyecto
 
 El proyecto está archivado en **Zenodo**, lo que permite citarlo como software científico.
 
@@ -310,16 +322,16 @@ DOI:
 
 ---
 
-# 💬 Cita
+## 💬 Cita
 
 Si usa este repositorio, porfavor citarlo de la siguiente manera:
 
-Squillari, A. (2026). Artificial Intelligence and Open Science in Research Software Engineering (Version 1.0) [Computer software]. https://doi.org/10.5281/zenodo.18827695
+Squillari, A. (2026). Artificial Intelligence and Open Science in Research Software Engineering (Version 1.1) [Computer software]. https://doi.org/10.5281/zenodo.18827695
 
 La cita tambien se encuentra disponible en `CITATION.cff`.
 
 ---
 
-# 📜 Licencia
+## 📜 Licencia
 
 MIT License
