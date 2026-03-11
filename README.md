@@ -165,12 +165,6 @@ git clone https://github.com/asquillari/Artificial-Intelligence-And-Open-Science
 cd Artificial-Intelligence-And-Open-Science-In-Research-Software-Engineering
 ```
 
-Instalar dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
 # 🐳 Ejecución completa con Docker 
 
 El pipeline completo puede ejecutarse usando **Docker Compose**, lo que garantiza reproducibilidad.
@@ -189,6 +183,12 @@ Esto levanta automáticamente:
 # ▶️ Ejecución manual del pipeline
 
 También puede ejecutarse paso a paso:
+
+Instalar dependencias:
+
+```bash
+pip install -r requirements.txt
+```
 
 En una terminal:
 
